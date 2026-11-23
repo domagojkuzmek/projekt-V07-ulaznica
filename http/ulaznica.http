@@ -1,0 +1,110 @@
+### Ulaznica – primjeri zahtjeva (Visual Studio, Rider, VS Code REST Client, IntelliJ HTTP Client)
+### Aplikacija: dotnet run --project src/Ulaznica.Api
+@host = http://localhost:5080
+# Nakon prijave kopiraj vrijednost "token" iz odgovora u varijablu ispod.
+@token = ZALIJEPI_TOKEN_OVDJE
+
+### Provjera rada
+GET {{host}}/api/health
+
+### Prijava (kopiraj "token" u @token)
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{"username": "ana", "password": "Ana12345!"}
+
+### Podaci o prijavljenom korisniku
+GET {{host}}/api/ja
+Authorization: Bearer {{token}}
+
+### Registracija novog korisnika
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{"username": "ivan.ivic", "password": "Lozinka123!", "email": "ivan@primjer.hr", "ime": "Ivan", "prezime": "Ivić"}
+
+### Događaji, sortirano po datumu
+GET {{host}}/api/dogadjaji?sort=datum&smjer=asc
+
+### Događaji, najjeftiniji prvi
+GET {{host}}/api/dogadjaji?sort=cijena&smjer=asc
+
+### Kupnja ulaznica
+POST {{host}}/api/narudzbe
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"dogadjajId": 3, "kolicina": 2, "imeNaUlaznici": "Ana Anić", "oib": "48291736504"}
+
+### Moje narudžbe
+GET {{host}}/api/narudzbe/moje
+Authorization: Bearer {{token}}
+
+### Ulaznica za ispis (HTML)
+GET {{host}}/ispis/narudzbe/1
+Authorization: Bearer {{token}}
+
+### Storno vlastite narudžbe (ID iz "Moje narudžbe")
+DELETE {{host}}/api/narudzbe/1
+Authorization: Bearer {{token}}
+
+### Moji računi
+GET {{host}}/api/racuni/moji
+Authorization: Bearer {{token}}
+
+### Račun u JSON obliku
+GET {{host}}/api/racuni/1?format=json
+Authorization: Bearer {{token}}
+
+### Račun u PDF obliku
+GET {{host}}/api/racuni/1?format=pdf
+Authorization: Bearer {{token}}
+
+### Preuzimanje datoteke računa
+GET {{host}}/api/racuni/preuzmi?datoteka=racun-ana-2026-0001.txt
+Authorization: Bearer {{token}}
+
+### Postavke obavijesti (YAML)
+POST {{host}}/api/postavke
+Authorization: Bearer {{token}}
+Content-Type: application/yaml
+
+podsjetnik: true
+satiPrije: 24
+kanal: email
+
+### Trenutne postavke obavijesti
+GET {{host}}/api/postavke
+Authorization: Bearer {{token}}
+
+### Uvoz događaja (prijavi se kao organizator / Ovlasteni12345!)
+POST {{host}}/api/dogadjaji/uvoz
+Authorization: Bearer {{token}}
+Content-Type: application/xml
+
+<dogadjaji>
+  <dogadjaj>
+    <naziv>Božićni koncert</naziv>
+    <mjesto>Katedrala, Zagreb</mjesto>
+    <datum>2026-12-12T20:00</datum>
+    <cijena>25.00</cijena>
+    <kapacitet>300</kapacitet>
+  </dogadjaj>
+</dogadjaji>
+
+### Zahtjev za obnovu lozinke (poruka se sprema u src/Ulaznica.Api/data/posta/)
+POST {{host}}/api/auth/reset-zahtjev
+Content-Type: application/json
+
+{"username": "ana"}
+
+### Nova lozinka (token iz poruke)
+POST {{host}}/api/auth/reset
+Content-Type: application/json
+
+{"token": "TOKEN_IZ_PORUKE", "novaLozinka": "NovaLozinka123!"}
+
+### Web prijava obrascem (odgovor 302 i kolačić SESSION)
+POST {{host}}/prijava
+Content-Type: application/x-www-form-urlencoded
+

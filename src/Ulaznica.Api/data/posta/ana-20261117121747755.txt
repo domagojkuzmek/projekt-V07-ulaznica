@@ -1,0 +1,14 @@
+Od: Ulaznica <noreply@ulaznica.example>
+Za: ana@primjer.hr
+Predmet: Obnova lozinke
+Datum: 2026-11-17 12:17:47 +01:00
+
+Poštovani,
+
+zatražena je obnova lozinke za korisnički račun ana.
+Novu lozinku možete postaviti na poveznici:
+http://localhost:5080/reset?token=9tmDlUXtpHPz4QXvfuG_7W8BhDN3pMfwtP8jZBKXTN4
+
+Token: 9tmDlUXtpHPz4QXvfuG_7W8BhDN3pMfwtP8jZBKXTN4
+
+Ako niste zatražili obnovu lozinke, zanemarite ovu poruku.

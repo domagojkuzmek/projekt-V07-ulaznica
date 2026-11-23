@@ -1,0 +1,16 @@
+# Keycloak za razvoj (Secure Coding akademija, Tjedan 3) – NIJE produkcijska konfiguracija.
+#   docker compose up -d        -> http://localhost:8180 (samo s ovog računala: 127.0.0.1)
+#   docker compose down         -> zaustavi (realm se pri sljedećem pokretanju ponovno uvozi)
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.1
+    # start-dev: HTTP, bez TLS-a, baza u memoriji kontejnera. --import-realm uvozi realm-akademija.json.
+    command: ["start-dev", "--import-realm", "--health-enabled=true"]
+    environment:
+      # Administrator MASTER realma (konzola http://localhost:8180/admin) – samo za lokalni razvoj.
+      KC_BOOTSTRAP_ADMIN_USERNAME: kcadmin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: kcadmin-samo-za-razvoj
+    ports:
+      - "127.0.0.1:8180:8080"   # dostupno samo lokalno, ne s mreže
+    volumes:
+      - ./realm-akademija.json:/opt/keycloak/data/import/realm-akademija.json:ro

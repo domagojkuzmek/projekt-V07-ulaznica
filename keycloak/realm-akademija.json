@@ -1,0 +1,184 @@
+{
+  "realm": "akademija",
+  "displayName": "Secure Coding akademija",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "loginWithEmailAllowed": false,
+  "duplicateEmailsAllowed": false,
+  "bruteForceProtected": true,
+  "failureFactor": 5,
+  "permanentLockout": false,
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 1800,
+  "passwordPolicy": "length(8) and notUsername",
+  "roles": {
+    "realm": [
+      {
+        "name": "KORISNIK",
+        "description": "Pacijent (vidi i briše svoje rezervacije)"
+      },
+      {
+        "name": "LIJECNIK",
+        "description": "Liječnik"
+      },
+      {
+        "name": "ADMIN",
+        "description": "Administrator (smije brisati sve rezervacije)"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "ana",
+      "enabled": true,
+      "email": "ana@primjer.hr",
+      "emailVerified": true,
+      "firstName": "Ana",
+      "lastName": "Anić",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Ana12345!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "KORISNIK",
+        "default-roles-akademija"
+      ]
+    },
+    {
+      "username": "marko",
+      "enabled": true,
+      "email": "marko@primjer.hr",
+      "emailVerified": true,
+      "firstName": "Marko",
+      "lastName": "Marić",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Marko12345!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "KORISNIK",
+        "default-roles-akademija"
+      ]
+    },
+    {
+      "username": "dr.horvat",
+      "enabled": true,
+      "email": "dr.horvat@primjer.hr",
+      "emailVerified": true,
+      "firstName": "Ivan",
+      "lastName": "Horvat",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Ovlasteni12345!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "LIJECNIK",
+        "default-roles-akademija"
+      ]
+    },
+    {
+      "username": "admin",
+      "enabled": true,
+      "email": "admin@primjer.hr",
+      "emailVerified": true,
+      "firstName": "Ivana",
+      "lastName": "Admin",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin12345!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "ADMIN",
+        "default-roles-akademija"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "medtermin-api",
+      "name": "MedTermin API (resource server, samo audience)",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "protocol": "openid-connect"
+    },
+    {
+      "clientId": "medtermin-spa",
+      "name": "MedTermin web (Authorization Code + PKCE)",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "protocol": "openid-connect",
+      "redirectUris": [
+        "http://localhost:5173/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5173"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:5173/*"
+      },
+      "protocolMappers": [
+        {
+          "name": "audience-medtermin-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "medtermin-api",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "medtermin-dev-cli",
+      "name": "SAMO ZA RAZVOJ: password grant za curl/testove",
+      "description": "Resource Owner Password Credentials je zastario (OAuth 2.1 ga uklanja). Nikad u produkciji.",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "audience-medtermin-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "medtermin-api",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ]
+}
