@@ -7,4 +7,11 @@ useDefault = true
 
 [allowlist]
 description = "Generirani izvještaji i alati"
-paths = ['''^izvjestaji/''', '''^\.ci-alati/''']
+paths = [
+  '''^izvjestaji/''',
+  '''^\.ci-alati/''',
+  # Dev mailboxes intentionally contain one-time password reset links.
+  '''^src/Ulaznica\.Api/data/posta/''',
+  # This test fixture key is a nonfunctional placeholder used only by test configuration.
+  '''^tests/Okviri\.Tests/TestnaAutentikacija\.cs$''',
+]

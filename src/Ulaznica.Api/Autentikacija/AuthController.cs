@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Ulaznica.Api.Autentikacija;
 
@@ -14,6 +15,7 @@ public sealed class AuthController(KorisniciServis korisnici, SesijeKorisnika se
     public sealed record NovaLozinkaZahtjev(string? Token, string? NovaLozinka);
 
     [HttpPost("login")]
+    [EnableRateLimiting("auth")]
     public IActionResult Login([FromBody] PrijavaZahtjev zahtjev)
     {
         var korisnik = korisnici.Prijavi(zahtjev);
@@ -21,10 +23,17 @@ public sealed class AuthController(KorisniciServis korisnici, SesijeKorisnika se
         {
             return Unauthorized(new { greska = "Neispravno korisničko ime ili lozinka." });
         }
-        return Ok(new { token = sesije.Otvori(korisnik), username = korisnik.Username, uloga = korisnik.Uloga });
+        return Ok(new
+        {
+            token = sesije.Otvori(korisnik),
+            expiresInSeconds = (int)SesijeKorisnika.Trajanje.TotalSeconds,
+            username = korisnik.Username,
+            uloga = korisnik.Uloga,
+        });
     }
 
     [HttpPost("register")]
+    [EnableRateLimiting("auth")]
     public IActionResult Register([FromBody] RegistracijaZahtjev zahtjev)
     {
         if (!KorisniciServis.JeIspravnoKorisnickoIme(zahtjev.Username))
@@ -46,6 +55,7 @@ public sealed class AuthController(KorisniciServis korisnici, SesijeKorisnika se
     }
 
     [HttpPost("reset-zahtjev")]
+    [EnableRateLimiting("auth")]
     public IActionResult ResetZahtjevAkcija([FromBody] ResetZahtjev zahtjev)
     {
         reset.ZatraziPromjenu(zahtjev.Username);
@@ -54,6 +64,7 @@ public sealed class AuthController(KorisniciServis korisnici, SesijeKorisnika se
     }
 
     [HttpPost("reset")]
+    [EnableRateLimiting("auth")]
     public IActionResult Reset([FromBody] NovaLozinkaZahtjev zahtjev) =>
         reset.PromijeniLozinku(zahtjev.Token, zahtjev.NovaLozinka) switch
         {

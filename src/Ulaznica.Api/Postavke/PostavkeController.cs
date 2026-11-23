@@ -47,6 +47,7 @@ public sealed class PostavkeController(Baza baza, ILogger<PostavkeController> lo
     }
 
     [HttpPost]
+    [RequestSizeLimit(NajvecaVelicina)]
     public async Task<IActionResult> Spremi()
     {
         var korisnik = HttpContext.Korisnik();

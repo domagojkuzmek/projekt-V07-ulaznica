@@ -5,3 +5,7 @@ TestResults/
 .vs/
 *.user
 .idea/
+src/Ulaznica.Api/data/dokumenti/
+src/Ulaznica.Api/data/posta/
+izvjestaji/
+.ci-alati/

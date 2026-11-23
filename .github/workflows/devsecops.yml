@@ -116,6 +116,8 @@ jobs:
     name: DAST (OWASP ZAP baseline)
     runs-on: ubuntu-latest
     env:
+      # Demo računi smiju postojati samo u izoliranom DAST runneru.
+      App__DemoAccountsEnabled: 'true'
       # Testni korisnik (seed iz T2). Lozinka iz GitHub secreta DAST_LOZINKA; ako ga nema, seed lozinka.
       DAST_KORISNIK: ana
       DAST_LOZINKA: ${{ secrets.DAST_LOZINKA }}

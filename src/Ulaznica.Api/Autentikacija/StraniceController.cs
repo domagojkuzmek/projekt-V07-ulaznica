@@ -41,6 +41,7 @@ public sealed class StraniceController(KorisniciServis korisnici, SesijeKorisnik
             Secure = true,
             SameSite = SameSiteMode.Lax,
             Path = "/",
+            MaxAge = SesijeKorisnika.Trajanje,
         });
 
         // Ispravak ranjivosti

@@ -83,6 +83,7 @@ public sealed class DogadjajiController(Baza baza, ILogger<DogadjajiController> 
     /// &lt;datum&gt;2026-12-12T20:00&lt;/datum&gt;&lt;cijena&gt;25.00&lt;/cijena&gt;&lt;kapacitet&gt;300&lt;/kapacitet&gt;&lt;/dogadjaj&gt;&lt;/dogadjaji&gt;</c>
     /// </summary>
     [HttpPost("uvoz")]
+    [RequestSizeLimit(NajvecaVelicinaXml)]
     [PotrebnaPrijava(Aplikacija.PovlastenaUloga, Uloge.Admin)]
     public async Task<IActionResult> Uvoz()
     {

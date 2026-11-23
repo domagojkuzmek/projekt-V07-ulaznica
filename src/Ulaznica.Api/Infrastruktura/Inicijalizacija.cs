@@ -21,11 +21,19 @@ public static class Inicijalizacija
         baza.Izvrsi(ZajednickaShema.Sql);
         baza.Izvrsi(PocetniPodaci.Shema);
 
-        korisnici.DodajPocetnogKorisnika(1, "ana", "Ana12345!", Uloge.Korisnik, "Ana", "Anić", "ana@primjer.hr", "48291736504");
-        korisnici.DodajPocetnogKorisnika(2, "marko", "Marko12345!", Uloge.Korisnik, "Marko", "Marić", "marko@primjer.hr", "73019485267");
-        korisnici.DodajPocetnogKorisnika(3, Aplikacija.PovlasteniKorisnik, "Ovlasteni12345!", Aplikacija.PovlastenaUloga,
-            Aplikacija.PovlasteniIme, Aplikacija.PovlasteniPrezime, $"{Aplikacija.PovlasteniKorisnik}@primjer.hr", "50617283940");
-        korisnici.DodajPocetnogKorisnika(4, "admin", "Admin12345!", Uloge.Admin, "Ivana", "Admin", "admin@primjer.hr", "61728394051");
+        // Fiksne demo vjerodajnice nikada se ne stvaraju u produkcijskom okruženju.
+        var okruzenje = services.GetRequiredService<IHostEnvironment>();
+        var demoRacuniOmoguceni = okruzenje.IsDevelopment()
+            || okruzenje.IsEnvironment("Testing")
+            || services.GetRequiredService<IConfiguration>().GetValue<bool>("App:DemoAccountsEnabled");
+        if (demoRacuniOmoguceni)
+        {
+            korisnici.DodajPocetnogKorisnika(1, "ana", "Ana12345!", Uloge.Korisnik, "Ana", "Anić", "ana@primjer.hr", "48291736504");
+            korisnici.DodajPocetnogKorisnika(2, "marko", "Marko12345!", Uloge.Korisnik, "Marko", "Marić", "marko@primjer.hr", "73019485267");
+            korisnici.DodajPocetnogKorisnika(3, Aplikacija.PovlasteniKorisnik, "Ovlasteni12345!", Aplikacija.PovlastenaUloga,
+                Aplikacija.PovlasteniIme, Aplikacija.PovlasteniPrezime, $"{Aplikacija.PovlasteniKorisnik}@primjer.hr", "50617283940");
+            korisnici.DodajPocetnogKorisnika(4, "admin", "Admin12345!", Uloge.Admin, "Ivana", "Admin", "admin@primjer.hr", "61728394051");
+        }
 
         PocetniPodaci.Unesi(baza);
 
