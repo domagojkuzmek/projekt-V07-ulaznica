@@ -31,7 +31,7 @@ jobs:
         with: { dotnet-version: '${{ env.DOTNET_VERSION }}' }
       - run: bash ci/build-test.sh
       - if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with: { name: izvjestaj-build, path: izvjestaji/, if-no-files-found: warn }
 
   sast:
